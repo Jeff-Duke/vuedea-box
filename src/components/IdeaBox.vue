@@ -8,7 +8,13 @@
     </section>
     <section class="ideas">
       <article v-for="idea in ideas" class="idea-card" :key="idea.id">
-        <h3>{{idea.title}}</h3>
+        <h3 @dblclick="editIdea(idea,title)">{{idea.title}}</h3>
+        <input class="edit" type="text"
+          v-model="idea.title"
+          v-todoFocus="title == editedTitle"
+          @blur="doneEdit(todo)"
+          @keyup.enter="doneEdit(todo)"
+          @keyup.esc="cancelEdit(todo)">
         <h4>{{idea.body}}</h4>
         <p>{{idea.quality}}</p>
         <button @click="deleteIdea(idea.id)">Delete</button>
@@ -23,7 +29,10 @@ export default {
   data() {
     return {
       title: '',
+      editedTitle: null,
       body: '',
+      editedBody: null,
+      backup: '',
       ideas: [],
     };
   },
@@ -35,11 +44,17 @@ export default {
       this.title = '';
       this.body = '';
     },
+    storeIdeas() {
+      localStorage.setItem('ideas', JSON.stringify(this.ideas));
+    },
+    loadStoredIdeas() {
+      this.ideas = JSON.parse(localStorage.getItem('ideas')) || [];
+    },
     addIdea() {
       const { title, body } = this;
       const idea = { id: Date.now(), title, body, quality: 'swill' };
 
-      this.ideas.push(idea);
+      this.ideas.unshift(idea);
       this.clearInputs();
 
       this.storeIdeas();
@@ -50,12 +65,16 @@ export default {
       this.ideas = this.ideas.filter(idea => idea.id !== id);
       this.storeIdeas();
     },
-    storeIdeas() {
-      localStorage.setItem('ideas', JSON.stringify(this.ideas));
+    editIdea(idea, el) {
+      debugger;
+      this.backup = idea.el;
+      this.editedIdea = idea;
     },
-    loadStoredIdeas() {
-      if (localStorage.getItem('ideas')) {
-        this.ideas = JSON.parse(localStorage.getItem('ideas'));
+  },
+  directives: {
+    todoFocus(el, binding) {
+      if (binding.value) {
+        el.focus();
       }
     },
   },
