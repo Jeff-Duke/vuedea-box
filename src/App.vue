@@ -1,28 +1,33 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld/>
-  </div>
+  <main id="app">
+    <IdeaBox />
+  </main>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import IdeaBox from './components/IdeaBox';
 
 export default {
   name: 'app',
   components: {
-    HelloWorld,
+    IdeaBox,
   },
 };
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  margin: 0;
 }
 </style>
