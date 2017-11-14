@@ -2,20 +2,32 @@
   <main>
     <section class="idea-inputs">
       <h1>idea<span class="title-gray">box</span></h1>
-      <input v-model="title" placeholder="Title" type="text" />
-      <input v-model="body" placeholder="Body" type="text" />
+      <input v-model="title.value" placeholder="Title" type="text" />
+      <input v-model="body.value" placeholder="Body" type="text" />
       <button @click="addIdea">Save</button>
     </section>
     <section class="ideas">
       <article v-for="idea in ideas" class="idea-card" :key="idea.id">
-        <h3 @dblclick="editIdea(idea,title)">{{idea.title}}</h3>
+        <h3 @dblclick="idea.title.editing = true" v-show="idea.title.editing == false">{{idea.title.value}}</h3>
         <input class="edit" type="text"
-          v-model="idea.title"
-          v-todoFocus="title == editedTitle"
-          @blur="doneEdit(todo)"
-          @keyup.enter="doneEdit(todo)"
-          @keyup.esc="cancelEdit(todo)">
-        <h4>{{idea.body}}</h4>
+          v-model="idea.title.value"
+          v-ideaFocus="title"
+          v-show="idea.title.editing == true"
+          @blur="idea.title.editing = false; doneEdit(idea);"
+          @keyup.enter="doneEdit(idea)"
+        >
+        <h4 @dblclick="idea.body.editing = !idea.body.editing"
+          v-show="!idea.body.editing"
+        >
+          {{idea.body.value}}
+        </h4>
+        <input class="edit" type="text"
+          v-model="idea.body.value"
+          v-ideaFocus="body"
+          v-show="idea.body.editing"
+          @blur="idea.body.editing = false; doneEdit(idea);"
+          @keyup.enter="doneEdit(idea)"
+        >
         <p>{{idea.quality}}</p>
         <button @click="deleteIdea(idea.id)">Delete</button>
       </article>
@@ -28,10 +40,14 @@ export default {
   name: 'IdeaBox',
   data() {
     return {
-      title: '',
-      editedTitle: null,
-      body: '',
-      editedBody: null,
+      title: {
+        value: '',
+        editing: false,
+      },
+      body: {
+        value: '',
+        editing: false,
+      },
       backup: '',
       ideas: [],
     };
@@ -65,17 +81,8 @@ export default {
       this.ideas = this.ideas.filter(idea => idea.id !== id);
       this.storeIdeas();
     },
-    editIdea(idea, el) {
-      debugger;
-      this.backup = idea.el;
-      this.editedIdea = idea;
-    },
-  },
-  directives: {
-    todoFocus(el, binding) {
-      if (binding.value) {
-        el.focus();
-      }
+    doneEdit() {
+      this.storeIdeas();
     },
   },
 };
