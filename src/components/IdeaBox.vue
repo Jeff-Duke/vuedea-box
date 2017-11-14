@@ -11,7 +11,6 @@
         <h3 @dblclick="idea.title.editing = true" v-show="idea.title.editing == false">{{idea.title.value}}</h3>
         <input class="edit" type="text"
           v-model="idea.title.value"
-          v-ideaFocus="title"
           v-show="idea.title.editing == true"
           @blur="idea.title.editing = false; doneEdit(idea);"
           @keyup.enter="doneEdit(idea)"
@@ -23,12 +22,15 @@
         </h4>
         <input class="edit" type="text"
           v-model="idea.body.value"
-          v-ideaFocus="body"
           v-show="idea.body.editing"
           @blur="idea.body.editing = false; doneEdit(idea);"
           @keyup.enter="doneEdit(idea)"
         >
-        <p>{{idea.quality}}</p>
+        <div>
+          <p>{{idea.quality}}</p>
+          <button @click="upvote(idea)">upvote</button>
+          <button @click="downvote(idea)">downvote</button>
+        </div>
         <button @click="deleteIdea(idea.id)">Delete</button>
       </article>
     </section>
@@ -52,7 +54,7 @@ export default {
       ideas: [],
     };
   },
-  mounted: function getRandomOnMount() {
+  mounted: function loadIdeasOnMount() {
     this.loadStoredIdeas();
   },
   methods: {
@@ -84,6 +86,22 @@ export default {
     doneEdit() {
       this.storeIdeas();
     },
+    upvote(idea) {
+      if (idea.quality === 'swill') {
+        idea.quality = 'plausible';
+      } else if (idea.quality === 'plausible') {
+        idea.quality = 'genius';
+      }
+      this.storeIdeas();
+    },
+    downvote(idea) {
+      if (idea.quality === 'genius') {
+        idea.quality = 'plausible';
+      } else if (idea.quality === 'plausible') {
+        idea.quality = 'swill';
+      }
+      this.storeIdeas();
+    }
   },
 };
 </script>
