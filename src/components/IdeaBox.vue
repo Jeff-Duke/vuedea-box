@@ -40,6 +40,7 @@
         <input class="edit" type="text"
           v-model="idea.title.value"
           v-show="idea.title.editing == true"
+          v-ideaFocus="idea.title.editing"
           @blur="idea.title.editing = false; doneEdit(idea);"
           @keyup.enter="idea.title.editing = false; doneEdit(idea);"
         >
@@ -53,6 +54,7 @@
         <input class="edit" type="text"
           v-model="idea.body.value"
           v-show="idea.body.editing"
+          v-ideaFocus="idea.body.editing"
           @blur="idea.body.editing = false; doneEdit(idea);"
           @keyup.enter="idea.body.editing = false; doneEdit(idea);"
         >
@@ -219,6 +221,14 @@ export default {
 
     sortOldest() {
       this.visibleIdeas = this.ideas.sort((a, b) => a.id > b.id);
+    },
+  },
+
+  directives: {
+    ideaFocus(el, binding) {
+      if (binding.value) {
+        el.focus();
+      }
     },
   },
 };
