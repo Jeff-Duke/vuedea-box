@@ -6,9 +6,9 @@
 
       <h1>idea<span class="title-gray">box</span></h1>
 
-      <input v-model="title.value" placeholder="Title" type="text" />
+      <input v-model="title.value" ref="titleInput" placeholder="Title" type="text" />
 
-      <input v-model="body.value" placeholder="Body" type="text" />
+      <input v-model="body.value" @keydown.enter="addIdea" placeholder="Body" type="text" />
 
       <button @click="addIdea">Save</button>
 
@@ -16,8 +16,12 @@
 
     <section class="ideas">
       <input v-model="searchTerm" @keyup="filterIdeas()" />
-      <button @click="sortHighestQuality">Sort by highest quality</button>
-      <button @click="sortLowestQuality">Sort by lowest quality</button>
+      <select v-model="sortBy" @change="sortIdeas">
+        <option value="newest">Newest</option>
+        <option value="oldest">Oldest</option>
+        <option value="highest">Highest Quality</option>
+        <option value="lowest">Lowest Quality</option>
+      </select>
 
       <article v-for="idea in visibleIdeas" class="idea-card" :key="idea.id">
         <h3
@@ -94,6 +98,7 @@ export default {
       ideas: [],
       visibleIdeas: [],
       searchTerm: '',
+      sortBy: '',
     };
   },
 
@@ -124,6 +129,7 @@ export default {
 
       this.ideas.unshift(idea);
       this.clearInputs();
+      this.$refs.titleInput.focus();
 
       this.storeIdeas();
     },
@@ -178,16 +184,35 @@ export default {
           idea.title.value
             .toLowerCase()
             .includes(this.searchTerm.toLowerCase()) ||
-          idea.body.value
-            .toLowerCase()
-            .includes(this.searchTerm.toLowerCase()),
+          idea.body.value.toLowerCase().includes(this.searchTerm.toLowerCase()),
       );
+    },
+    sortIdeas() {
+      if (this.sortBy === 'newest') {
+        return this.sortNewest();
+      }
+      if (this.sortBy === 'oldest') {
+        return this.sortOldest();
+      }
+      if (this.sortBy === 'highest') {
+        return this.sortHighestQuality();
+      }
+      if (this.sortBy === 'lowest') {
+        return this.sortLowestQuality();
+      }
+      return null;
     },
     sortHighestQuality() {
       this.visibleIdeas = this.ideas.sort((a, b) => a.quality < b.quality);
     },
     sortLowestQuality() {
       this.visibleIdeas = this.ideas.sort((a, b) => a.quality > b.quality);
+    },
+    sortNewest() {
+      this.visibleIdeas = this.ideas.sort((a, b) => a.id < b.id);
+    },
+    sortOldest() {
+      this.visibleIdeas = this.ideas.sort((a, b) => a.id > b.id);
     },
   },
 };
