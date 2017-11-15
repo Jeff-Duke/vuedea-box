@@ -27,7 +27,7 @@
           @keyup.enter="doneEdit(idea)"
         >
         <div>
-          <p>{{idea.quality}}</p>
+          <p>{{getIdeaQuality(idea.quality)}}</p>
           <button @click="upvote(idea)">upvote</button>
           <button @click="downvote(idea)">downvote</button>
         </div>
@@ -70,7 +70,7 @@ export default {
     },
     addIdea() {
       const { title, body } = this;
-      const idea = { id: Date.now(), title, body, quality: 'swill' };
+      const idea = { id: Date.now(), title, body, quality: 1 };
 
       this.ideas.unshift(idea);
       this.clearInputs();
@@ -86,22 +86,32 @@ export default {
     doneEdit() {
       this.storeIdeas();
     },
+    getIdeaQuality(quality) {
+      if (quality === 1) {
+        return 'swill';
+      }
+      if (quality === 2) {
+        return 'plausible';
+      }
+      if (quality === 3) {
+        return 'genius';
+      }
+      return null;
+    },
     upvote(idea) {
-      if (idea.quality === 'swill') {
-        idea.quality = 'plausible';
-      } else if (idea.quality === 'plausible') {
-        idea.quality = 'genius';
+      /* eslint no-param-reassign: ["error", { "props": false }] */
+      if (idea.quality < 3) {
+        idea.quality += 1;
       }
       this.storeIdeas();
     },
     downvote(idea) {
-      if (idea.quality === 'genius') {
-        idea.quality = 'plausible';
-      } else if (idea.quality === 'plausible') {
-        idea.quality = 'swill';
+      /* eslint no-param-reassign: ["error", { "props": false }] */
+      if (idea.quality > 1) {
+        idea.quality -= 1;
       }
       this.storeIdeas();
-    }
+    },
   },
 };
 </script>
