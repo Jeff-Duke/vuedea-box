@@ -6,17 +6,23 @@
 
       <h1>idea<span class="title-gray">box</span></h1>
 
-      <input v-model="title.value" ref="titleInput" placeholder="Title" type="text" />
+      <label for="title-input">Title</label>
+      <input v-model="title.value" id="title-input" ref="titleInput" placeholder="Title" type="text" />
 
-      <input v-model="body.value" @keydown.enter="addIdea" placeholder="Body" type="text" />
+      <label for="body-input">Body</label>
+      <input v-model="body.value" id="body-input" @keydown.enter="addIdea" placeholder="Body" type="text" />
 
       <button @click="addIdea">Save</button>
 
     </section>
 
     <section class="ideas">
-      <input v-model="searchTerm" @keyup="filterIdeas()" />
-      <select v-model="sortBy" @change="sortIdeas">
+
+      <label for="search">Search</label>
+      <input v-model="searchTerm" id="search" @keyup="filterIdeas()" />
+
+      <label for="sort">Sort By:</label>
+      <select v-model="sortBy" id="sort" @change="sortIdeas">
         <option value="newest">Newest</option>
         <option value="oldest">Oldest</option>
         <option value="highest">Highest Quality</option>
@@ -187,6 +193,7 @@ export default {
           idea.body.value.toLowerCase().includes(this.searchTerm.toLowerCase()),
       );
     },
+
     sortIdeas() {
       if (this.sortBy === 'newest') {
         return this.sortNewest();
@@ -202,15 +209,19 @@ export default {
       }
       return null;
     },
+
     sortHighestQuality() {
       this.visibleIdeas = this.ideas.sort((a, b) => a.quality < b.quality);
     },
+
     sortLowestQuality() {
       this.visibleIdeas = this.ideas.sort((a, b) => a.quality > b.quality);
     },
+
     sortNewest() {
       this.visibleIdeas = this.ideas.sort((a, b) => a.id < b.id);
     },
+
     sortOldest() {
       this.visibleIdeas = this.ideas.sort((a, b) => a.id > b.id);
     },
