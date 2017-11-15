@@ -7,10 +7,10 @@
       <h1>idea<span class="title-gray">box</span></h1>
 
       <label for="title-input">Title</label>
-      <input v-model="title.value" id="title-input" ref="titleInput" placeholder="Title" type="text" />
+      <input v-model="title" id="title-input" ref="titleInput" placeholder="Title" type="text" />
 
       <label for="body-input">Body</label>
-      <input v-model="body.value" id="body-input" @keydown.enter="addIdea" placeholder="Body" type="text" />
+      <input v-model="body" id="body-input" @keyup.enter="addIdea" placeholder="Body" type="text" />
 
       <button @click="addIdea">Save</button>
 
@@ -23,7 +23,7 @@
 
       <label for="sort">Sort By:</label>
       <select v-model="sortBy" id="sort" @change="sortIdeas">
-        <option value="newest">Newest</option>
+        <option value="newest" selected>Newest</option>
         <option value="oldest">Oldest</option>
         <option value="highest">Highest Quality</option>
         <option value="lowest">Lowest Quality</option>
@@ -31,7 +31,7 @@
 
       <article v-for="idea in visibleIdeas" class="idea-card" :key="idea.id">
         <h3
-          @dblclick="idea.title.editing = true"
+          @dblclick="idea.title.editing = true;"
           v-show="idea.title.editing == false"
         >
           {{idea.title.value}}
@@ -41,7 +41,7 @@
           v-model="idea.title.value"
           v-show="idea.title.editing == true"
           @blur="idea.title.editing = false; doneEdit(idea);"
-          @keyup.enter="doneEdit(idea)"
+          @keyup.enter="idea.title.editing = false; doneEdit(idea);"
         >
 
         <h4 @dblclick="idea.body.editing = !idea.body.editing"
@@ -54,7 +54,7 @@
           v-model="idea.body.value"
           v-show="idea.body.editing"
           @blur="idea.body.editing = false; doneEdit(idea);"
-          @keyup.enter="doneEdit(idea)"
+          @keyup.enter="idea.body.editing = false; doneEdit(idea);"
         >
 
         <div>
@@ -92,19 +92,12 @@ export default {
 
   data() {
     return {
-      title: {
-        value: '',
-        editing: false,
-      },
-      body: {
-        value: '',
-        editing: false,
-      },
-      backup: '',
+      title: '',
+      body: '',
+      searchTerm: '',
+      sortBy: 'newest',
       ideas: [],
       visibleIdeas: [],
-      searchTerm: '',
-      sortBy: '',
     };
   },
 
@@ -122,15 +115,17 @@ export default {
 
     storeIdeas() {
       localStorage.setItem('ideas', JSON.stringify(this.ideas));
+      this.sortIdeas();
     },
 
     loadStoredIdeas() {
       this.ideas = JSON.parse(localStorage.getItem('ideas')) || [];
-      this.visibleIdeas = this.ideas;
+      this.sortIdeas();
     },
 
     addIdea() {
-      const { title, body } = this;
+      const title = { value: this.title, editing: false };
+      const body = { value: this.body, editing: false };
       const idea = { id: Date.now(), title, body, quality: 1 };
 
       this.ideas.unshift(idea);
