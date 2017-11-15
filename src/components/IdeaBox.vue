@@ -16,6 +16,8 @@
 
     <section class="ideas">
       <input v-model="searchTerm" @keyup="filterIdeas()" />
+      <button @click="sortHighestQuality">Sort by highest quality</button>
+      <button @click="sortLowestQuality">Sort by lowest quality</button>
 
       <article v-for="idea in visibleIdeas" class="idea-card" :key="idea.id">
         <h3
@@ -99,9 +101,7 @@ export default {
     this.loadStoredIdeas();
   },
 
-  computed: {
-
-  },
+  computed: {},
 
   methods: {
     clearInputs() {
@@ -173,10 +173,21 @@ export default {
     },
 
     filterIdeas() {
-      this.visibleIdeas = this.ideas.filter(idea =>
-        idea.title.value.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        idea.body.value.toLowerCase().includes(this.searchTerm.toLowerCase()),
+      this.visibleIdeas = this.ideas.filter(
+        idea =>
+          idea.title.value
+            .toLowerCase()
+            .includes(this.searchTerm.toLowerCase()) ||
+          idea.body.value
+            .toLowerCase()
+            .includes(this.searchTerm.toLowerCase()),
       );
+    },
+    sortHighestQuality() {
+      this.visibleIdeas = this.ideas.sort((a, b) => a.quality < b.quality);
+    },
+    sortLowestQuality() {
+      this.visibleIdeas = this.ideas.sort((a, b) => a.quality > b.quality);
     },
   },
 };
