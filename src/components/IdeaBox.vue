@@ -7,19 +7,24 @@
 
     <section class="ideas">
 
-      <label for="search">Search</label>
-      <input v-model="searchTerm" id="search" @keyup="filterIdeas()" />
+      <label for="search">Search
+        <input
+          v-model="searchTerm"
+          id="search"
+        />
+      </label>
 
-      <label for="sort">Sort By:</label>
-      <select v-model="sortBy" id="sort" @change="sortIdeas">
-        <option value="newest" selected>Newest</option>
-        <option value="oldest">Oldest</option>
-        <option value="highest">Highest Quality</option>
-        <option value="lowest">Lowest Quality</option>
-      </select>
+      <label for="sort">Sort By:
+        <select v-model="sortBy" id="sort" @change="sortedIdeas">
+          <option value="newest" selected>Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="highest">Highest Quality</option>
+          <option value="lowest">Lowest Quality</option>
+        </select>
+      </label>
 
       <Idea
-        v-for="idea in visibleIdeas"
+        v-for="idea in filteredIdeas"
         :key="idea.id"
         :idea="idea"
         @deleteIdea="deleteIdea"
@@ -36,6 +41,13 @@
 import IdeaHeader from './IdeaHeader';
 import Idea from './Idea';
 
+const sorters = {
+  newest: ideas => ideas.sort((a, b) => a.created < b.created),
+  oldest: ideas => ideas.sort((a, b) => a.created > b.created),
+  highest: ideas => ideas.sort((a, b) => a.quality < b.quality),
+  lowest: ideas => ideas.sort((a, b) => a.quality > b.quality),
+};
+
 export default {
   name: 'IdeaBox',
   components: {
@@ -45,13 +57,24 @@ export default {
 
   data() {
     return {
+      ideas: [],
       searchTerm: '',
       sortBy: 'newest',
-      ideas: [],
-      visibleIdeas: [],
-      title: '',
-      body: '',
     };
+  },
+
+  computed: {
+    sortedIdeas() {
+      return sorters[this.sortBy](this.ideas);
+    },
+
+    filteredIdeas() {
+      return this.sortedIdeas.filter(
+        idea =>
+          idea.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+          idea.body.toLowerCase().includes(this.searchTerm.toLowerCase()),
+      );
+    },
   },
 
   mounted() {
@@ -64,14 +87,11 @@ export default {
       this.storeIdeas();
     },
 
-    storeIdeas() {
-      localStorage.setItem('ideas', JSON.stringify(this.ideas));
-      this.sortIdeas();
-    },
+    updateIdea(idea) {
+      const index = this.ideas.findIndex(storedIdea => storedIdea.id === idea.id);
 
-    loadStoredIdeas() {
-      this.ideas = JSON.parse(localStorage.getItem('ideas')) || [];
-      this.sortIdeas();
+      this.ideas[index] = idea;
+      this.storeIdeas();
     },
 
     deleteIdea(ideaID) {
@@ -81,51 +101,12 @@ export default {
       this.storeIdeas();
     },
 
-    filterIdeas() {
-      this.visibleIdeas = this.ideas.filter(
-        idea =>
-          idea.title.value.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-          idea.body.value.toLowerCase().includes(this.searchTerm.toLowerCase()),
-      );
+    storeIdeas() {
+      localStorage.setItem('ideas', JSON.stringify(this.ideas));
     },
 
-    sortIdeas() {
-      if (this.sortBy === 'newest') {
-        return this.sortNewest();
-      }
-      if (this.sortBy === 'oldest') {
-        return this.sortOldest();
-      }
-      if (this.sortBy === 'highest') {
-        return this.sortHighestQuality();
-      }
-      if (this.sortBy === 'lowest') {
-        return this.sortLowestQuality();
-      }
-      return null;
-    },
-
-    sortHighestQuality() {
-      this.visibleIdeas = this.ideas.sort((a, b) => a.quality < b.quality);
-    },
-
-    sortLowestQuality() {
-      this.visibleIdeas = this.ideas.sort((a, b) => a.quality > b.quality);
-    },
-
-    sortNewest() {
-      this.visibleIdeas = this.ideas.sort((a, b) => a.id < b.id);
-    },
-
-    sortOldest() {
-      this.visibleIdeas = this.ideas.sort((a, b) => a.id > b.id);
-    },
-
-    updateIdea(idea) {
-      const index = this.ideas.findIndex(storedIdea => storedIdea.id === idea.id);
-
-      this.ideas[index] = idea;
-      this.storeIdeas();
+    loadStoredIdeas() {
+      this.ideas = JSON.parse(localStorage.getItem('ideas')) || [];
     },
   },
 };
