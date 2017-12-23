@@ -5,8 +5,7 @@
       @addIdea="addIdea"
     />
 
-    <section class="ideas">
-
+    <section class="filter-sort-panel">
       <label for="search">Search
         <input
           v-model="searchTerm"
@@ -25,16 +24,15 @@
           <option value="lowest">Lowest Quality</option>
         </select>
       </label>
+    </section>
 
-      <Idea
+    <Idea
         v-for="idea in filteredIdeas"
         :key="idea.id"
         :idea="idea"
         @deleteIdea="deleteIdea"
         @updateIdea="updateIdea"
       />
-
-    </section>
 
   </main>
 

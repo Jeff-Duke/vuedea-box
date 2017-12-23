@@ -28,7 +28,12 @@
       />
     </label>
 
-    <button @click="createIdea">Save</button>
+    <button
+    @click="createIdea"
+    :disabled="!isEnabled"
+    >
+      Save
+    </button>
 
   </section>
 </template>
@@ -42,6 +47,11 @@ export default {
       body: '',
     };
   },
+  computed: {
+    isEnabled() {
+      return Boolean(this.title) && Boolean(this.body);
+    },
+  },
 
   mounted() {
     this.$refs.titleInput.focus();
@@ -50,18 +60,20 @@ export default {
   methods: {
     createIdea() {
       const { title, body } = this;
-      const idea = {
-        id: Date.now(),
-        title,
-        body,
-        quality: 1,
-        created: Date.now(),
-      };
+      if (this.isEnabled) {
+        const idea = {
+          id: Date.now(),
+          title,
+          body,
+          quality: 1,
+          created: Date.now(),
+        };
 
-      this.$refs.titleInput.focus();
-
-      this.clearInputs();
-      this.$emit('addIdea', idea);
+        this.$refs.titleInput.focus();
+        this.clearInputs();
+        this.$emit('addIdea', idea);
+      }
+      return null;
     },
 
     clearInputs() {
