@@ -18,51 +18,13 @@
         <option value="lowest">Lowest Quality</option>
       </select>
 
-      <article v-for="idea in visibleIdeas" class="idea-card" :key="idea.id">
-        <h3>
-          {{idea.title}}
-        </h3>
-
-        <input class="edit" type="text"
-          v-model="idea.title.value"
-          v-show="idea.title.editing == true"
-          @blur="idea.title.editing = false; doneEdit(idea);"
-          @keyup.enter="idea.title.editing = false; doneEdit(idea);"
-        >
-
-        <p>
-          {{idea.body}}
-        </p`>
-
-        <input class="edit" type="text"
-          v-model="idea.body.value"
-          v-show="idea.body.editing"
-          @blur="idea.body.editing = false; doneEdit(idea);"
-          @keyup.enter="idea.body.editing = false; doneEdit(idea);"
-        >
-
-        <div>
-          <p>{{getIdeaQuality(idea.quality)}}</p>
-
-          <button
-            @click="upvote(idea)"
-            :disabled="idea.quality === 3"
-          >
-            upvote
-          </button>
-
-          <button
-            @click="downvote(idea)"
-            :disabled="idea.quality === 1"
-          >
-            downvote
-          </button>
-
-        </div>
-
-        <button @click="deleteIdea(idea.id)">Delete</button>
-
-      </article>
+      <Idea
+        v-for="idea in visibleIdeas"
+        :key="idea.id"
+        :idea="idea"
+        @deleteIdea="deleteIdea"
+        @updateIdea="updateIdea"
+      />
 
     </section>
 
@@ -72,11 +34,13 @@
 
 <script>
 import IdeaHeader from './IdeaHeader';
+import Idea from './Idea';
 
 export default {
   name: 'IdeaBox',
   components: {
     IdeaHeader,
+    Idea,
   },
 
   data() {
@@ -90,16 +54,14 @@ export default {
     };
   },
 
-  mounted: function loadIdeasOnMount() {
+  mounted() {
     this.loadStoredIdeas();
   },
 
-  computed: {},
-
   methods: {
-    clearInputs() {
-      this.title = '';
-      this.body = '';
+    addIdea(idea) {
+      this.ideas.unshift(idea);
+      this.storeIdeas();
     },
 
     storeIdeas() {
@@ -112,52 +74,10 @@ export default {
       this.sortIdeas();
     },
 
-    addIdea(idea) {
-      this.ideas.unshift(idea);
-      this.storeIdeas();
-    },
-
     deleteIdea(ideaID) {
       const id = parseInt(ideaID, 10);
 
       this.ideas = this.ideas.filter(idea => idea.id !== id);
-      this.storeIdeas();
-    },
-
-    doneEdit() {
-      this.storeIdeas();
-    },
-
-    getIdeaQuality(quality) {
-      if (quality === 1) {
-        return 'swill';
-      }
-      if (quality === 2) {
-        return 'plausible';
-      }
-      if (quality === 3) {
-        return 'genius';
-      }
-      return null;
-    },
-
-    findIdea(id) {
-      return this.ideas.find(idea => idea.id === id);
-    },
-
-    upvote(idea) {
-      const ideaObject = this.findIdea(idea.id);
-      if (ideaObject.quality < 3) {
-        ideaObject.quality += 1;
-      }
-      this.storeIdeas();
-    },
-
-    downvote(idea) {
-      const ideaObject = this.findIdea(idea.id);
-      if (ideaObject.quality > 1) {
-        ideaObject.quality -= 1;
-      }
       this.storeIdeas();
     },
 
@@ -199,6 +119,13 @@ export default {
 
     sortOldest() {
       this.visibleIdeas = this.ideas.sort((a, b) => a.id > b.id);
+    },
+
+    updateIdea(idea) {
+      const index = this.ideas.findIndex(storedIdea => storedIdea.id === idea.id);
+
+      this.ideas[index] = idea;
+      this.storeIdeas();
     },
   },
 };

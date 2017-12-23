@@ -43,6 +43,10 @@ export default {
     };
   },
 
+  mounted() {
+    this.$refs.titleInput.focus();
+  },
+
   methods: {
     createIdea() {
       const { title, body } = this;
