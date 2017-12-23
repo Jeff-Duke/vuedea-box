@@ -47,14 +47,15 @@ export default {
       body: '',
     };
   },
+
+  mounted() {
+    this.$refs.titleInput.focus();
+  },
+
   computed: {
     isEnabled() {
       return Boolean(this.title) && Boolean(this.body);
     },
-  },
-
-  mounted() {
-    this.$refs.titleInput.focus();
   },
 
   methods: {

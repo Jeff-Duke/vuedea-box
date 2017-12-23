@@ -26,7 +26,8 @@
       </label>
     </section>
 
-    <Idea
+    <section class="idea-list">
+      <Idea
         v-for="idea in filteredIdeas"
         :key="idea.id"
         :idea="idea"
@@ -34,6 +35,7 @@
         @updateIdea="updateIdea"
       />
 
+    </section>
   </main>
 
 </template>
@@ -64,6 +66,10 @@ export default {
     };
   },
 
+  mounted() {
+    this.loadStoredIdeas();
+  },
+
   computed: {
     sortedIdeas() {
       return sorters[this.sortBy](this.ideas);
@@ -76,10 +82,6 @@ export default {
           idea.body.toLowerCase().includes(this.searchTerm.toLowerCase()),
       );
     },
-  },
-
-  mounted() {
-    this.loadStoredIdeas();
   },
 
   methods: {

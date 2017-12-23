@@ -1,56 +1,56 @@
 <template>
-<article class="idea-card">
-        <h3
-          @dblclick="editing = 'title'"
-          v-show="editing !==
-          'title'"
-        >
-          {{idea.title}}
-        </h3>
+  <article class="idea-card">
+    <h3
+      @dblclick="editing = 'title'"
+      v-show="editing !==
+      'title'"
+    >
+      {{idea.title}}
+    </h3>
 
-        <input class="edit" type="text"
-          v-model="title"
-          v-show="editing === 'title'"
-          @blur="editing = false; updateIdea();"
-          @keyup.enter="editing = false; updateIdea();"
-        >
+    <input class="edit" type="text"
+      v-model="title"
+      v-show="editing === 'title'"
+      @blur="editing = false; updateIdea();"
+      @keyup.enter="editing = false; updateIdea();"
+    >
 
-        <p
-          @dblclick="editing = 'body'"
-          v-show="editing !== 'body'"
-        >
-          {{idea.body}}
-        </p>
+    <p
+      @dblclick="editing = 'body'"
+      v-show="editing !== 'body'"
+    >
+      {{idea.body}}
+    </p>
 
-        <input class="edit" type="text"
-          v-model="body"
-          v-show="editing === 'body'"
-          @blur="editing = false; updateIdea();"
-          @keyup.enter="editing = false; updateIdea();"
-        >
+    <input class="edit" type="text"
+      v-model="body"
+      v-show="editing === 'body'"
+      @blur="editing = false; updateIdea();"
+      @keyup.enter="editing = false; updateIdea();"
+    >
 
-        <div>
-          <p>{{ ideaQuality }}</p>
+    <div>
+      <p>{{ ideaQuality }}</p>
 
-          <button
-            @click="upVote(idea)"
-            :disabled="quality === 3"
-          >
-            upvote
-          </button>
+      <button
+        @click="upVote(idea)"
+        :disabled="quality === 3"
+      >
+        upvote
+      </button>
 
-          <button
-            @click="downVote(idea)"
-            :disabled="quality === 1"
-          >
-            downvote
-          </button>
+      <button
+        @click="downVote(idea)"
+        :disabled="quality === 1"
+      >
+        downvote
+      </button>
 
-        </div>
+    </div>
 
-        <button @click="deleteIdea(idea.id)">Delete</button>
+    <button @click="deleteIdea(idea.id)">Delete</button>
 
-      </article>
+  </article>
 </template>
 <script>
 export default {
