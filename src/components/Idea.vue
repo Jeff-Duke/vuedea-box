@@ -11,19 +11,22 @@
         <input class="edit" type="text"
           v-model="title"
           v-show="editing === 'title'"
-          @blur="editing = false; doneEditing();"
-          @keyup.enter="editing = false; doneEditing();"
+          @blur="editing = false; updateIdea();"
+          @keyup.enter="editing = false; updateIdea();"
         >
 
-        <p>
+        <p
+          @dblclick="editing = 'body'"
+          v-show="editing !== 'body'"
+        >
           {{idea.body}}
         </p>
 
         <input class="edit" type="text"
           v-model="body"
-          v-show="editing == 'body'"
-          @blur="editing = false; doneEditing();"
-          @keyup.enter="editing = false; doneEditing();"
+          v-show="editing === 'body'"
+          @blur="editing = false; updateIdea();"
+          @keyup.enter="editing = false; updateIdea();"
         >
 
         <div>
@@ -107,10 +110,6 @@ export default {
       };
 
       return this.$emit('updateIdea', idea);
-    },
-
-    doneEditing() {
-      this.updateIdea();
     },
   },
 };
