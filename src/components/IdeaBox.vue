@@ -15,7 +15,10 @@
       </label>
 
       <label for="sort">Sort By:
-        <select v-model="sortBy" id="sort" @change="sortedIdeas">
+        <select
+        v-model="sortBy"
+        id="sort"
+        >
           <option value="newest" selected>Newest</option>
           <option value="oldest">Oldest</option>
           <option value="highest">Highest Quality</option>
