@@ -52,7 +52,7 @@ const sorters = {
 };
 
 export default {
-  name: 'IdeaBox',
+  name: 'App',
   components: {
     IdeaHeader,
     Idea,
@@ -115,8 +115,28 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang='scss'>
+@import '../styles/_mixins_vars.scss';
+
+html {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  background-color: white;
+  font-family: 'Open Sans', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
 h1,
 h2 {
   font-weight: normal;

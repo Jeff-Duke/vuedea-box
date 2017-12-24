@@ -1,41 +1,39 @@
 <template>
-  <section class="idea-inputs">
+  <header class="idea-header">
 
-    <h1>idea
+    <h1 class="header">idea
       <span class="title-gray">box</span>
     </h1>
 
-    <label
-      for="title-input"
-    >Title
-      <input
-        v-model="title"
-        id="title-input"
-        ref="titleInput"
-        placeholder="Title"
-        type="text"
-      />
-    </label>
+    <section class="inputs">
+        <input
+          v-model="title"
+          class="input input--title"
+          ref="titleInput"
+          placeholder="Title"
+          type="text"
+          aria-label="title"
+        />
 
-    <label
-      for="body-input">Body
-      <input
-        v-model="body"
-        id="body-input"
-        @keyup.enter="createIdea"
-        placeholder="Body"
-        type="text"
-      />
-    </label>
+        <textarea
+          v-model="body"
+          class="input input--body"
+          @keyup.enter="createIdea"
+          placeholder="Body"
+          type="text"
+          aria-label="body"
+        />
 
-    <button
-    @click="createIdea"
-    :disabled="!isEnabled"
-    >
-      Save
-    </button>
+      <button
+      @click="createIdea"
+      :disabled="!isEnabled"
+      class="btn btn--primary"
+      >
+        Save
+      </button>
+    </section>
 
-  </section>
+  </header>
 </template>
 <script>
 export default {
@@ -84,3 +82,74 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+@import '../styles/_mixins_vars.scss';
+
+.idea-header {
+  background-color: $color-background;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  margin-bottom: 1rem;
+
+  .inputs {
+    display: flex;
+    flex-direction: column;
+    width: 65vw;
+
+    @media screen and(max-width: 480px) {
+      width: 90vw;
+    }
+
+    .input {
+      border: 2px solid $color-border-gray;
+      margin-bottom: 1rem;
+
+      &--body {
+        height: 2.8125rem;
+        resize: none;
+
+        @media screen and(max-width: 480px) {
+          height: 5.625rem;
+        }
+      }
+    }
+
+    .input,
+    .btn {
+      font-family: $primary-font;
+      font-size: 1.125rem;
+      padding: 0.5rem;
+    }
+
+    .btn--primary {
+      align-self: center;
+      background-color: $color-primary-blue;
+      color: $color-white;
+      border: 2px solid transparent;
+      cursor: pointer;
+      width: 100%;
+
+      &:hover,
+      &:focus {
+        background-color: $color-hover-green;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+      }
+
+      &:active,
+      &:focus:active {
+        box-shadow: none;
+      }
+
+      &:disabled {
+        pointer-events: none;
+        background-color: $color-white;
+        color: $color-text-dark-gray;
+        border: 2px solid $color-border-gray;
+      }
+    }
+  }
+}
+</style>
+
