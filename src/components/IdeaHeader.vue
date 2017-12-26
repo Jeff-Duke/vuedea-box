@@ -94,6 +94,22 @@ export default {
   padding: 2rem;
   margin-bottom: 1rem;
 
+  .header {
+    font-family: $secondary-font;
+    color: $color-primary-blue;
+    font-size: 3rem;
+    margin-bottom: 2rem;
+
+    .title-gray {
+      color: $color-text-dark-gray;
+    }
+
+    @media screen and (max-width: 480px) {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+  }
+
   .inputs {
     display: flex;
     flex-direction: column;

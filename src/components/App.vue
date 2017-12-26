@@ -116,18 +116,9 @@ export default {
 </script>
 
 <style lang='scss'>
+@import '../styles/_reset.scss';
 @import '../styles/_mixins_vars.scss';
 @import '../styles/_buttons_inputs.scss';
-
-html {
-  box-sizing: border-box;
-}
-
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
 
 body {
   background-color: $color-white;
@@ -153,7 +144,7 @@ body {
     appearance: none;
     background: url('../assets/chevron-down.png') no-repeat 95%;
     background-size: 1.25rem;
-    border: 2px solid $color-hover-green;
+    border: 2px solid $color-border-gray;
     font-size: 1rem;
     margin: 1rem 0 1.5rem 0.75rem;
     padding: 0.25rem;
