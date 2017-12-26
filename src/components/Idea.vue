@@ -125,7 +125,7 @@ export default {
   font-family: $primary-font;
   font-size: 1rem;
   margin: 1rem 0;
-  padding-bottom: 2rem;
+  padding: 1rem 0 3rem 0;
 
   .idea__title,
   .idea__quality {
@@ -146,7 +146,6 @@ export default {
 
   .idea__body {
     line-height: 1.5rem;
-    padding: 0.5rem 0;
     width: 85%;
   }
 
