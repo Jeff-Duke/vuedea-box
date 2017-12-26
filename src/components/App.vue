@@ -17,6 +17,7 @@
         <select
         v-model="sortBy"
         class="select select--sort"
+        @change="sortIdeas"
         >
           <option value="newest" selected>Newest</option>
           <option value="oldest">Oldest</option>
@@ -63,18 +64,16 @@ export default {
       ideas: [],
       searchTerm: '',
       sortBy: 'newest',
+      sortedIdeas: [],
     };
   },
 
   mounted() {
     this.loadStoredIdeas();
+    this.sortIdeas();
   },
 
   computed: {
-    sortedIdeas() {
-      return sorters[this.sortBy](this.ideas);
-    },
-
     filteredIdeas() {
       return this.sortedIdeas.filter(
         idea =>
@@ -95,6 +94,7 @@ export default {
       this.ideas[index] = idea;
 
       this.storeIdeas();
+      this.sortIdeas();
     },
 
     deleteIdea(ideaID) {
@@ -110,6 +110,11 @@ export default {
 
     loadStoredIdeas() {
       this.ideas = JSON.parse(localStorage.getItem('ideas')) || [];
+    },
+
+    sortIdeas() {
+      const sortedIdeas = sorters[this.sortBy](this.ideas);
+      this.sortedIdeas = sortedIdeas;
     },
   },
 };
