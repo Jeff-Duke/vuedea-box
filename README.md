@@ -1,4 +1,4 @@
-# y
+# vuedea box
 
 > A place for storing your ideas
 
