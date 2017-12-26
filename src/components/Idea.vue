@@ -74,17 +74,13 @@ export default {
 
   computed: {
     ideaQuality() {
-      const quality = this.quality;
-      if (quality === 1) {
-        return 'swill';
-      }
-      if (quality === 2) {
-        return 'plausible';
-      }
-      if (quality === 3) {
-        return 'genius';
-      }
-      return null;
+      const qualityGate = {
+        1: 'swill',
+        2: 'plausible',
+        3: 'genius',
+      };
+
+      return qualityGate[this.quality];
     },
   },
 
