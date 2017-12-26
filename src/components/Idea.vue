@@ -1,9 +1,9 @@
 <template>
   <article class="idea-card">
     <h3
-      @dblclick="editing = 'title'"
-      v-show="editing !==
-      'title'"
+      @dblclick="editIdea('ideaTitle')"
+      v-if="editing !==
+      'ideaTitle'"
       class="idea__title"
     >
       {{idea.title}}
@@ -11,9 +11,10 @@
 
     <input class="edit edit__title" type="text"
       v-model="title"
-      v-show="editing === 'title'"
-      @blur="editing = false; updateIdea();"
-      @keyup.enter="editing = false; updateIdea();"
+      v-if="editing === 'ideaTitle'"
+      @blur="doneEditing"
+      @keyup.enter="doneEditing"
+      ref="ideaTitle"
     />
 
     <button
@@ -22,8 +23,8 @@
     />
 
     <p
-      @dblclick="editing = 'body'"
-      v-show="editing !== 'body'"
+      @dblclick="editIdea('ideaBody')"
+      v-if="editing !== 'ideaBody'"
       class="idea__body"
     >
       {{idea.body}}
@@ -31,9 +32,10 @@
 
     <textarea class="edit edit__body" type="text"
       v-model="body"
-      v-show="editing === 'body'"
-      @blur="editing = false; updateIdea();"
-      @keyup.enter="editing = false; updateIdea();"
+      v-if="editing === 'ideaBody'"
+      @blur="doneEditing"
+      @keyup.enter="doneEditing"
+      ref="ideaBody"
     />
 
     <div>
@@ -113,9 +115,22 @@ export default {
 
       return this.$emit('updateIdea', idea);
     },
+
+    editIdea(ref) {
+      this.editing = ref;
+      this.$nextTick(() => {
+        this.$refs[ref].focus();
+      });
+    },
+
+    doneEditing() {
+      this.editing = false;
+      this.updateIdea();
+    },
   },
 };
 </script>
+
 <style lang="scss">
 @import '../styles/_mixins_vars.scss';
 
