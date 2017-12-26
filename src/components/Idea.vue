@@ -18,7 +18,7 @@
     />
 
     <button
-      @click="deleteIdea(idea.id)"
+      @click="deleteIdea"
       class="btn__idea btn__idea--delete"
     />
 

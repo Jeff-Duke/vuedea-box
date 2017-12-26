@@ -102,6 +102,7 @@ export default {
 
       this.ideas = this.ideas.filter(idea => idea.id !== id);
       this.storeIdeas();
+      this.sortIdeas();
     },
 
     storeIdeas() {
