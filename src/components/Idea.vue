@@ -141,11 +141,12 @@ export default {
 
   .idea__title {
     font-size: 1.5rem;
-    margin: 0 0 1rem 0;
+    margin: 0;
   }
 
   .idea__body {
     line-height: 1.5rem;
+    padding: 0.5rem 0;
     width: 85%;
   }
 

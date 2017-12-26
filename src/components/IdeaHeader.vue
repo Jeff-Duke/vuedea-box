@@ -94,18 +94,6 @@ export default {
   padding: 2rem;
   margin-bottom: 1rem;
 
-  .header {
-    color: $color-primary-blue;
-    font-family: $secondary-font;
-    font-size: 3rem;
-    margin-bottom: 2rem;
-
-    .title-gray {
-      color: $color-text-dark-gray;
-      margin-left: -0.75rem;
-    }
-  }
-
   .inputs {
     display: flex;
     flex-direction: column;
