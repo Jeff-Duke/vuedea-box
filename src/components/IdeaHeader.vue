@@ -5,7 +5,7 @@
       <span class="title-gray">box</span>
     </h1>
 
-    <section class="inputs">
+    <section class="inputs container">
         <input
           v-model="title"
           class="input input--title"
@@ -84,6 +84,7 @@ export default {
 </script>
 <style lang="scss">
 @import '../styles/_mixins_vars.scss';
+@import '../styles/_buttons_inputs.scss';
 
 .idea-header {
   background-color: $color-background;
@@ -96,59 +97,10 @@ export default {
   .inputs {
     display: flex;
     flex-direction: column;
-    width: 65vw;
+  }
 
-    @media screen and(max-width: 480px) {
-      width: 90vw;
-    }
-
-    .input {
-      border: 2px solid $color-border-gray;
-      margin-bottom: 1rem;
-
-      &--body {
-        height: 2.8125rem;
-        resize: none;
-
-        @media screen and(max-width: 480px) {
-          height: 5.625rem;
-        }
-      }
-    }
-
-    .input,
-    .btn {
-      font-family: $primary-font;
-      font-size: 1.125rem;
-      padding: 0.5rem;
-    }
-
-    .btn--primary {
-      align-self: center;
-      background-color: $color-primary-blue;
-      color: $color-white;
-      border: 2px solid transparent;
-      cursor: pointer;
-      width: 100%;
-
-      &:hover,
-      &:focus {
-        background-color: $color-hover-green;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-      }
-
-      &:active,
-      &:focus:active {
-        box-shadow: none;
-      }
-
-      &:disabled {
-        pointer-events: none;
-        background-color: $color-white;
-        color: $color-text-dark-gray;
-        border: 2px solid $color-border-gray;
-      }
-    }
+  @media screen and (max-width: 480px) {
+    padding: 2rem 0.5rem;
   }
 }
 </style>

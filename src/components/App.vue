@@ -5,18 +5,18 @@
       @addIdea="addIdea"
     />
 
-    <section class="filter-sort-panel">
-      <label for="search">Search
+    <section class="filter-sort-panel container">
         <input
           v-model="searchTerm"
-          id="search"
+          class="input input--search"
+          placeholder="Search"
+          aria-label="Search"
         />
-      </label>
 
       <label for="sort">Sort By:
         <select
         v-model="sortBy"
-        id="sort"
+        class="select select--sort"
         >
           <option value="newest" selected>Newest</option>
           <option value="oldest">Oldest</option>
@@ -26,7 +26,7 @@
       </label>
     </section>
 
-    <section class="idea-list">
+    <section class="idea-list container">
       <Idea
         v-for="idea in filteredIdeas"
         :key="idea.id"
@@ -92,8 +92,8 @@ export default {
 
     updateIdea(idea) {
       const index = this.ideas.findIndex(storedIdea => storedIdea.id === idea.id);
-
       this.ideas[index] = idea;
+
       this.storeIdeas();
     },
 
@@ -117,11 +117,10 @@ export default {
 
 <style lang='scss'>
 @import '../styles/_mixins_vars.scss';
+@import '../styles/_buttons_inputs.scss';
 
 html {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 *,
@@ -131,25 +130,34 @@ html {
 }
 
 body {
-  background-color: white;
-  font-family: 'Open Sans', sans-serif;
+  background-color: $color-white;
+  font-family: $primary-font;
   margin: 0;
-  padding: 0;
 }
 
-h1,
-h2 {
-  font-weight: normal;
+.container {
+  margin: 0 auto;
+  width: 65vw;
+
+  @media screen and(max-width: 480px) {
+    width: 90vw;
+  }
 }
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+
+.filter-sort-panel {
+  display: flex;
+  flex-direction: column-reverse;
+  margin-top: 2rem;
+
+  .select--sort {
+    appearance: none;
+    background: url('../assets/chevron-down.png') no-repeat 95%;
+    background-size: 1.25rem;
+    border: 2px solid $color-hover-green;
+    font-size: 1rem;
+    margin: 1rem 0 1.5rem 0.75rem;
+    padding: 0.25rem;
+    padding-right: 2rem;
+  }
 }
 </style>
