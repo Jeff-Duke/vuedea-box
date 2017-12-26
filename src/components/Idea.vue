@@ -1,9 +1,9 @@
 <template>
   <article class="idea-card">
     <h3
-      @dblclick="editing = 'title'"
-      v-show="editing !==
-      'title'"
+      @dblclick="editIdea('ideaTitle')"
+      v-if="editing !==
+      'ideaTitle'"
       class="idea__title"
     >
       {{idea.title}}
@@ -11,9 +11,10 @@
 
     <input class="edit edit__title" type="text"
       v-model="title"
-      v-show="editing === 'title'"
-      @blur="editing = false; updateIdea();"
-      @keyup.enter="editing = false; updateIdea();"
+      v-if="editing === 'ideaTitle'"
+      @blur="doneEditing"
+      @keyup.enter="doneEditing"
+      ref="ideaTitle"
     />
 
     <button
@@ -22,8 +23,8 @@
     />
 
     <p
-      @dblclick="editing = 'body'"
-      v-show="editing !== 'body'"
+      @dblclick="editIdea('ideaBody')"
+      v-if="editing !== 'ideaBody'"
       class="idea__body"
     >
       {{idea.body}}
@@ -31,9 +32,10 @@
 
     <textarea class="edit edit__body" type="text"
       v-model="body"
-      v-show="editing === 'body'"
-      @blur="editing = false; updateIdea();"
-      @keyup.enter="editing = false; updateIdea();"
+      v-if="editing === 'ideaBody'"
+      @blur="doneEditing"
+      @keyup.enter="doneEditing"
+      ref="ideaBody"
     />
 
     <div>
@@ -54,6 +56,7 @@
 
   </article>
 </template>
+
 <script>
 export default {
   name: 'Idea',
@@ -71,17 +74,13 @@ export default {
 
   computed: {
     ideaQuality() {
-      const quality = this.quality;
-      if (quality === 1) {
-        return 'swill';
-      }
-      if (quality === 2) {
-        return 'plausible';
-      }
-      if (quality === 3) {
-        return 'genius';
-      }
-      return null;
+      const qualityGate = {
+        1: 'swill',
+        2: 'plausible',
+        3: 'genius',
+      };
+
+      return qualityGate[this.quality];
     },
   },
 
@@ -113,9 +112,22 @@ export default {
 
       return this.$emit('updateIdea', idea);
     },
+
+    editIdea(ref) {
+      this.editing = ref;
+      this.$nextTick(() => {
+        this.$refs[ref].focus();
+      });
+    },
+
+    doneEditing() {
+      this.editing = false;
+      this.updateIdea();
+    },
   },
 };
 </script>
+
 <style lang="scss">
 @import '../styles/_mixins_vars.scss';
 
@@ -148,13 +160,23 @@ export default {
     width: 85%;
   }
 
-  input,
-  textarea {
+  .edit {
     display: block;
     border: 2px solid $color-border-gray;
+    font-family: $primary-font;
     font-size: 1.125rem;
     margin-bottom: 1rem;
     padding: 0.5rem;
+
+    &__title,
+    &__body {
+      width: 85%;
+    }
+
+    &__body {
+      resize: none;
+      height: 6rem;
+    }
   }
 
   .btn__idea {
