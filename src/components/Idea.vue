@@ -42,13 +42,13 @@
       <button
         @click="upVote(idea)"
         :disabled="quality === 3"
-        class="btn__idea btn__idea--upvote"
+        class="btn btn__idea btn__idea--upvote"
       />
 
       <button
         @click="downVote(idea)"
         :disabled="quality === 1"
-        class="btn__idea btn__idea--downvote"
+        class="btn btn__idea btn__idea--downvote"
       />
     </div>
 
