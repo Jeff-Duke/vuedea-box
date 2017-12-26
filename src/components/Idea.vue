@@ -56,6 +56,7 @@
 
   </article>
 </template>
+
 <script>
 export default {
   name: 'Idea',
@@ -165,13 +166,23 @@ export default {
     width: 85%;
   }
 
-  input,
-  textarea {
+  .edit {
     display: block;
     border: 2px solid $color-border-gray;
+    font-family: $primary-font;
     font-size: 1.125rem;
     margin-bottom: 1rem;
     padding: 0.5rem;
+
+    &__title,
+    &__body {
+      width: 85%;
+    }
+
+    &__body {
+      resize: none;
+      height: 6rem;
+    }
   }
 
   .btn__idea {

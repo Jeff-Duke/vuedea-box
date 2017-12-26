@@ -35,6 +35,7 @@
 
   </header>
 </template>
+
 <script>
 export default {
   name: 'IdeaHeader',
@@ -82,6 +83,7 @@ export default {
   },
 };
 </script>
+
 <style lang="scss">
 @import '../styles/_mixins_vars.scss';
 @import '../styles/_buttons_inputs.scss';
