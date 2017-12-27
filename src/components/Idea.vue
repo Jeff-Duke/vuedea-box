@@ -20,6 +20,7 @@
     <button
       @click="deleteIdea"
       class="btn__idea btn__idea--delete"
+      aria-label="delete idea"
     />
 
     <p
@@ -45,12 +46,14 @@
         @click="upVote(idea)"
         :disabled="quality === 3"
         class="btn btn__idea btn__idea--upvote"
+        aria-label="upvote idea"
       />
 
       <button
         @click="downVote(idea)"
         :disabled="quality === 1"
         class="btn btn__idea btn__idea--downvote"
+        aria-label="downvote idea"
       />
     </div>
 
